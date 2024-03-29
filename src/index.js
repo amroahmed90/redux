@@ -1,4 +1,5 @@
 import { compose, pipe } from "lodash/fp";
+import { produce } from "immer";
 
 const trim = (str) => str.trim();
 const convertToUpperCase = (str) => str.toUpperCase();
@@ -36,28 +37,40 @@ const resultWithComposeCurry = pipe(trim, convertToUpperCase, generateMessageCur
 const personMutable = { name: "John", age: 22 }
 const updatedMutable = personMutable;
 // const updated = Object.assign({}, person, { name: "Bill" });
-console.log("Mutable", personMutable); // { name: "John", age: 22 }
-console.log("Mutable", updatedMutable); // { name: "John", age: 22 } => notice that the original object is unchanged
+// console.log("Mutable", personMutable); // { name: "John", age: 22 }
+// console.log("Mutable", updatedMutable); // { name: "John", age: 22 } => notice that the original object is unchanged
 personMutable.name = "Zack";
-console.log("Mutable", personMutable); // { name: "Zack", age: 22 } => name is changed
-console.log("Mutable", updatedMutable); // { name: "Zack", age: 22 } => name is unchanged
+// console.log("Mutable", personMutable); // { name: "Zack", age: 22 } => name is changed
+// console.log("Mutable", updatedMutable); // { name: "Zack", age: 22 } => name is unchanged
 
 // Immutability in Objects
 // 1. Object.assign
 const personImmutable = { name: "John", age: 22 }
 const updatedImmutable = Object.assign({}, personImmutable, { name: "Bill" });
-console.log("Immutable - assign", personImmutable); // { name: "John", age: 22 }
-console.log("Immutable - assign", updatedImmutable); // { name: "Bill", age: 22 } => notice the changed value of the new object
+// console.log("Immutable - assign", personImmutable); // { name: "John", age: 22 }
+// console.log("Immutable - assign", updatedImmutable); // { name: "Bill", age: 22 } => notice the changed value of the new object
 personImmutable.name = "Zack";
-console.log("Immutable - assign", personImmutable); // { name: "Zack", age: 22 } => name is changed
-console.log("Immutable - assign", updatedImmutable); // { name: "Bill", age: 22 } => name is unchanged
+// console.log("Immutable - assign", personImmutable); // { name: "Zack", age: 22 } => name is changed
+// console.log("Immutable - assign", updatedImmutable); // { name: "Bill", age: 22 } => name is unchanged
 
 // 2. Spread operator
 const personImmutableSpread = { name: "John", age: 22 }
 const updatedImmutableSpread = { ...personImmutableSpread, name: "Bill" };
-console.log("Immutable - spread", personImmutableSpread); // { name: "John", age: 22 }
-console.log("Immutable - spread", updatedImmutableSpread); // { name: "Bill", age: 22 } => notice the changed value of the new object
+// console.log("Immutable - spread", personImmutableSpread); // { name: "John", age: 22 }
+// console.log("Immutable - spread", updatedImmutableSpread); // { name: "Bill", age: 22 } => notice the changed value of the new object
 personImmutableSpread.name = "Zack";
-console.log("Immutable - spread", personImmutableSpread); // { name: "Zack", age: 22 } => name is changed
-console.log("Immutable - spread", updatedImmutableSpread); // { name: "Bill", age: 22 } => name is unchanged
+// console.log("Immutable - spread", personImmutableSpread); // { name: "Zack", age: 22 } => name is changed
+// console.log("Immutable - spread", updatedImmutableSpread); // { name: "Bill", age: 22 } => name is unchanged
+
+// 3. Immer
+// Immer is a library that allows you to work with immutable state in a more convenient way
+// it uses a proxy object to create a draft state that can be modified
+// it can be complicated to work with nested objects => immer simplifies this
+const personImmer = { name: "John", age: 22, location: { city: "New York", country: "USA" } }
+const updatedImmer = produce(personImmer, draft => {
+  draft.name = "Bill";
+  draft.location.city = "Los Angeles";
+});
+console.log("Immutable - immer", personImmer); // { name: "John", age: 22, location: { city: "New York", country: "USA" } }
+console.log("Immutable - immer", updatedImmer); // { name: "Bill", age: 22, location: { city: "Los Angeles", country: "USA" } } => notice the changed value of the new object
 
