@@ -17,3 +17,11 @@ const resultWithPipe = pipe(trim, convertToUpperCase, generateMessage);
 
 console.log(resultWithCompose("   john   "));
 console.log(resultWithPipe("   john   "));
+
+/* Currying: transformation of a function with multiple arguments into a sequence of single-arument functions */
+// suppose you want to customize the message
+const generateMessageCurry = (greeting) => (name) =>
+  `Hello, ${name}! ${greeting}!`;
+
+const resultWithComposeCurry = pipe(trim, convertToUpperCase, generateMessageCurry("Good morning"));
+console.log(resultWithComposeCurry("   john   "));
