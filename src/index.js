@@ -54,5 +54,5 @@ const newArrayOfBooks = arrayOfBooks.map((book) =>
   book === "Book2" ? "Book4" : book
 );
 
-console.log(arrayOfBooks);
-console.log(newArrayOfBooks);
+console.log(arrayOfBooks); // ["Book1", "Book2", "Book3"]
+console.log(newArrayOfBooks); // ["Book1", "Book4", "Book3"]
