@@ -1,76 +1,58 @@
-import { compose, pipe } from "lodash/fp";
 import { produce } from "immer";
 
-const trim = (str) => str.trim();
-const convertToUpperCase = (str) => str.toUpperCase();
-const generateMessage = (str) => `Hello, ${str}! Good morning!`;
+const book = {
+  author: "Robert Kiyosaki",
+  book: {
+    name: "Rich Dad Poor Dad",
+    price: "$8.0", // change price to 10
+    rating: 4.7, // change rating to 4.8
+  },
+};
 
-const resultWithChaining = generateMessage(
-  convertToUpperCase(trim("   john   "))
-); // hard to read
-// console.log(resultWithChaining);
+// update using spread operator
+const newBook = {
+  ...book,
+  book: {
+    ...book.book,
+    price: "$10",
+    rating: 4.8,
+  },
+};
 
-// simple solution from loadash
-// from right to left => compose
-const resultWithCompose = compose(generateMessage, convertToUpperCase, trim);
-// from left to right => pipe
-const resultWithPipe = pipe(trim, convertToUpperCase, generateMessage);
+console.log(newBook);
+/**
+ {
+  author: "Robert Kiyosaki",
+  book: {
+    name: "Rich Dad Poor Dad",
+    price: "$10.0",
+    rating: 4.8,
+  },
+ }
+ */
 
-// console.log(resultWithCompose("   john   "));
-// console.log(resultWithPipe("   john   "));
-
-/*Lesson - Currying: transformation of a function with multiple arguments into a sequence of single-arument functions */
-// suppose you want to customize the message
-const generateMessageCurry = (greeting) => (name) =>
-  `Hello, ${name}! ${greeting}!`;
-
-const resultWithComposeCurry = pipe(trim, convertToUpperCase, generateMessageCurry("Good morning"));
-// console.log(resultWithComposeCurry("   john   "));
-
-
-/* Lesson - immutability */
-// inside redux, data should be immutable.
-// Mutability in Objects - recap
-// Objects are copied by reference
-// which mean that when creating a copy of an object, both new variables will point to the same memory location
-// changing one variable will affect the other
-const personMutable = { name: "John", age: 22 }
-const updatedMutable = personMutable;
-// const updated = Object.assign({}, person, { name: "Bill" });
-// console.log("Mutable", personMutable); // { name: "John", age: 22 }
-// console.log("Mutable", updatedMutable); // { name: "John", age: 22 } => notice that the original object is unchanged
-personMutable.name = "Zack";
-// console.log("Mutable", personMutable); // { name: "Zack", age: 22 } => name is changed
-// console.log("Mutable", updatedMutable); // { name: "Zack", age: 22 } => name is unchanged
-
-// Immutability in Objects
-// 1. Object.assign
-const personImmutable = { name: "John", age: 22 }
-const updatedImmutable = Object.assign({}, personImmutable, { name: "Bill" });
-// console.log("Immutable - assign", personImmutable); // { name: "John", age: 22 }
-// console.log("Immutable - assign", updatedImmutable); // { name: "Bill", age: 22 } => notice the changed value of the new object
-personImmutable.name = "Zack";
-// console.log("Immutable - assign", personImmutable); // { name: "Zack", age: 22 } => name is changed
-// console.log("Immutable - assign", updatedImmutable); // { name: "Bill", age: 22 } => name is unchanged
-
-// 2. Spread operator
-const personImmutableSpread = { name: "John", age: 22 }
-const updatedImmutableSpread = { ...personImmutableSpread, name: "Bill" };
-// console.log("Immutable - spread", personImmutableSpread); // { name: "John", age: 22 }
-// console.log("Immutable - spread", updatedImmutableSpread); // { name: "Bill", age: 22 } => notice the changed value of the new object
-personImmutableSpread.name = "Zack";
-// console.log("Immutable - spread", personImmutableSpread); // { name: "Zack", age: 22 } => name is changed
-// console.log("Immutable - spread", updatedImmutableSpread); // { name: "Bill", age: 22 } => name is unchanged
-
-// 3. Immer
-// Immer is a library that allows you to work with immutable state in a more convenient way
-// it uses a proxy object to create a draft state that can be modified
-// it can be complicated to work with nested objects => immer simplifies this
-const personImmer = { name: "John", age: 22, location: { city: "New York", country: "USA" } }
-const updatedImmer = produce(personImmer, draft => {
-  draft.name = "Bill";
-  draft.location.city = "Los Angeles";
+// update using immer's produce
+const newBookImmer = produce(book, (draft) => {
+  draft.book.price = "$10";
+  draft.book.rating = 4.8;
 });
-console.log("Immutable - immer", personImmer); // { name: "John", age: 22, location: { city: "New York", country: "USA" } }
-console.log("Immutable - immer", updatedImmer); // { name: "Bill", age: 22, location: { city: "Los Angeles", country: "USA" } } => notice the changed value of the new object
+console.log(newBookImmer);
+/**
+ {
+  author: "Robert Kiyosaki",
+  book: {
+    name: "Rich Dad Poor Dad",
+    price: "$10.0",
+    rating: 4.8,
+  },
+ }
+ */
 
+const arrayOfBooks = ["Book1", "Book2", "Book3"];
+
+const newArrayOfBooks = arrayOfBooks.map((book) =>
+  book === "Book2" ? "Book4" : book
+);
+
+console.log(arrayOfBooks);
+console.log(newArrayOfBooks);
