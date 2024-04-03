@@ -28,6 +28,16 @@ const reducer = (state: State = [], action: Action): State => {
           : task
       );
 
+    case actionTypes.UPDATE_TASK:
+      return state.map((task) =>
+        task.id === action.payload.id
+          ? {
+              ...task,
+              task: action.payload.task,
+            }
+          : task
+      );
+
     default:
       return state;
   }

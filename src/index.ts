@@ -1,4 +1,4 @@
-import { addTask, completeTask, removeTask } from "./actions";
+import { addTask, completeTask, removeTask, updateTask } from "./actions";
 import store from "./store";
 
 // subscribe method runs whenever the store state is updated
@@ -11,6 +11,10 @@ const unsubscribe = store.subscribe(() => {
 // add tasks
 store.dispatch(addTask("Learn Redux"));
 store.dispatch(addTask("Learn TS"));
+store.dispatch(addTask("Learn Nest.JS"));
+
+// update task #3
+store.dispatch(updateTask(2, "Learn Node.JS"));
 
 // complete task #1
 store.dispatch(completeTask(1));
