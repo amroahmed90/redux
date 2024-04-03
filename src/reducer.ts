@@ -18,6 +18,16 @@ const reducer = (state: State = [], action: Action): State => {
     case actionTypes.REMOVE_TASK:
       return state.filter((task) => task.id !== action.payload.id);
 
+    case actionTypes.COMPLETE_TASK:
+      return state.map((task) =>
+        task.id === action.payload.id
+          ? {
+              ...task,
+              completed: true,
+            }
+          : task
+      );
+
     default:
       return state;
   }

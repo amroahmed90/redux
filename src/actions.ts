@@ -8,3 +8,7 @@ export const addTask = (task: string): Action => {
 export const removeTask = (id: number): Action => {
   return { type: actionTypes.REMOVE_TASK, payload: { id } };
 };
+
+export const completeTask = (id: number): Action => {
+  return { type: actionTypes.COMPLETE_TASK, payload: { id } };
+};

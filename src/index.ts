@@ -1,4 +1,4 @@
-import { addTask, removeTask } from "./actions";
+import { addTask, completeTask, removeTask } from "./actions";
 import store from "./store";
 
 // subscribe method runs whenever the store state is updated
@@ -8,12 +8,12 @@ const unsubscribe = store.subscribe(() => {
   console.log("Updated!", store.getState());
 });
 
-store.dispatch(addTask("Learn Redux")); // subscribe: updated with 1 task
-store.dispatch(addTask("Learn TS")); // subscribe: updated with 2 tasks 
+// add tasks
+store.dispatch(addTask("Learn Redux"));
+store.dispatch(addTask("Learn TS"));
 
-unsubscribe() // no console log after removing a task 
+// complete task #1
+store.dispatch(completeTask(1));
 
-// console.log(store.getState());
-
-store.dispatch(removeTask(1)); // subscribe: updated with a task removed
-// console.log(store.getState());
+// remove task #1
+store.dispatch(removeTask(1));
