@@ -23,6 +23,21 @@ export const updateTask = (id: number, newTask: string): Action => {
   return { type: UPDATE_TASK, payload: { id, task: newTask } };
 };
 
+// API calls with redux-thunk
+export const fetchTasks = (url: string) => 
+  /**
+   * here we return a function that has 2 arguments:
+   * @param dispatch which is the same as the dispatch method we get from the redux createStore
+   * @param getState which is the same as the getState method we get from the redux createStore
+   */
+  async (dispatch: (arg0: Action) => void, getState: any) => {
+    const response = await fetch(url);
+    const result = await response.json();
+    dispatch(addTask(result.title));
+    console.log(getState());
+  };
+;
+
 // reducer
 let id = 0;
 
