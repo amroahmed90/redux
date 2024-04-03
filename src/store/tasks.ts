@@ -1,11 +1,34 @@
-import * as actionTypes from "./actionTypes";
 import { Action, State } from "./types";
 
+// action types
+export const ADD_TASK = "ADD_TASK";
+export const REMOVE_TASK = "REMOVE_TASK";
+export const COMPLETE_TASK = "COMPLETE_TASK";
+export const UPDATE_TASK = "UPDATE_TASK";
+
+// actions
+export const addTask = (task: string): Action => {
+  return { type: ADD_TASK, payload: { task } };
+};
+
+export const removeTask = (id: number): Action => {
+  return { type: REMOVE_TASK, payload: { id } };
+};
+
+export const completeTask = (id: number): Action => {
+  return { type: COMPLETE_TASK, payload: { id } };
+};
+
+export const updateTask = (id: number, newTask: string): Action => {
+  return { type: UPDATE_TASK, payload: { id, task: newTask } };
+};
+
+// reducer
 let id = 0;
 
 const reducer = (state: State = [], action: Action): State => {
   switch (action.type) {
-    case actionTypes.ADD_TASK:
+    case ADD_TASK:
       return [
         ...state,
         {
@@ -15,10 +38,10 @@ const reducer = (state: State = [], action: Action): State => {
         },
       ];
 
-    case actionTypes.REMOVE_TASK:
+    case REMOVE_TASK:
       return state.filter((task) => task.id !== action.payload.id);
 
-    case actionTypes.COMPLETE_TASK:
+    case COMPLETE_TASK:
       return state.map((task) =>
         task.id === action.payload.id
           ? {
@@ -28,7 +51,7 @@ const reducer = (state: State = [], action: Action): State => {
           : task
       );
 
-    case actionTypes.UPDATE_TASK:
+    case UPDATE_TASK:
       return state.map((task) =>
         task.id === action.payload.id
           ? {

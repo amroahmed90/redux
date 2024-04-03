@@ -1,4 +1,4 @@
-import * as actionTypes from "./actionTypes";
+import * as actionTypes from "./tasks";
 
 export type Task = {
   id: number;

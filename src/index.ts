@@ -1,5 +1,5 @@
-import { addTask, completeTask, removeTask, updateTask } from "./actions";
-import store from "./store";
+import { addTask, completeTask, removeTask, updateTask } from "./store/tasks";
+import store from "./store/configureStore";
 
 // subscribe method runs whenever the store state is updated
 // the subscribe method returns an unsubscribe function to be called later
